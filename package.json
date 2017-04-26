@@ -1,7 +1,7 @@
 {
-  "name": "angular_04242017",
-  "version": "1.2.0",
-  "description": "Demonstration web application using Angular",
+  "name": "angular_05012017",
+  "version": "1.0.0",
+  "description": "Class files for Angular",
   "scripts": {
     "start": "npm run prod",
     "test": "karma start ./config/karma.conf.js",
@@ -17,21 +17,13 @@
     "webpack-test": "webpack --config ./config/webpack.test.js",
     "tdd": "npm test -- --auto-watch --no-single-run"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/training4developers/mastering-angular-starter.git"
-  },
   "keywords": [
-    "angular2",
+    "angular",
     "typescript",
     "angular"
   ],
   "author": "Eric W. Greene",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/training4developers/mastering-angular-starter/issues"
-  },
-  "homepage": "https://github.com/training4developers/mastering-angular-starter#readme",
   "devDependencies": {
     "babel-eslint": "^7.1.1",
     "concurrently": "^3.0.0",
