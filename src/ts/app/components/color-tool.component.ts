@@ -7,7 +7,7 @@ import { Component, DoCheck } from "@angular/core";
             <h1>Color Tool</h1>
         </header>
         <ul>
-            <li *ngFor="let color of sortedColors" (click)="deleteColor(color)">{{color}}</li>
+            <li *ngFor="let color of sortedColors" (click)="deleteColor(color)">{{color | titlecase}}</li>
 
             <!-- <ng-template ngFor let-color [ngForOf]="colors">
                  <li>{{color}}</li>
@@ -22,6 +22,11 @@ import { Component, DoCheck } from "@angular/core";
             <button>Add Color</button>
             <button type="reset">Reset</button>
         </form>
+
+        <input type="checkbox" [(ngModel)]="showMe">
+        <div *ngIf="showMe">You can see me!</div>
+
+        <span>{{100 | currency:'VND':true:'1.2-2'}}</span>
     `,
 })
 export class ColorToolComponent implements DoCheck {
