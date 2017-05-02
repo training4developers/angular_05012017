@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 
 import { Car } from "../models/car";
 import { SortOrder } from "../enums/sort-order";
+import { CarsService } from "../services/cars.service";
 
 @Component({
     selector: "car-tool",
@@ -77,7 +78,7 @@ import { SortOrder } from "../enums/sort-order";
                     <td>{{car.year}}</td>
                     <td>{{car.color | titlecase}}</td>
                     <td>{{car.price | currency:'USD':true:'1.2-2'}}</td>
-                    <td><img (click)="deleteCar(car)"
+                    <td><img (click)="deleteCar(car.id)"
                         src="https://maxcdn.icons8.com/Color/PNG/24/User_Interface/delete_sign-24.png"
                         title="Delete" width="24" height="24"></td>
                 </tr>
@@ -92,15 +93,10 @@ export class CarToolComponent {
     public lastCars: Car[] = null;
     public theSortedCars: Car[] = [];
 
-    public cars: Car[] = [
-        { make: "Ford", model: "Fusion", year: 2017, color: "blue", price: 25000 },
-        { make: "Chevy", model: "Volt", year: 2015, color: "red", price: 27000 },
-        { make: "Toyota", model: "Prius", year: 2016, color: "black", price: 30000 },
-    ];
+    constructor(private cars: CarsService) { }
 
-    public deleteCar(car: Car) {
-        const carIndex = this.cars.indexOf(car);
-        this.cars = [ ...this.cars.slice(0, carIndex), ...this.cars.slice(carIndex + 1) ];
+    public deleteCar(carId: number) {
+        this.deleteCar(carId);
     }
 
     public sortByCol(colName: string) {
@@ -121,8 +117,8 @@ export class CarToolComponent {
 
     public get sortedCars() {
 
-        if (this.lastCars !== this.cars) {
-            this.theSortedCars = this.cars.concat().sort((a: Car, b: Car) => {
+        if (this.lastCars !== this.cars.getAll()) {
+            this.theSortedCars = this.cars.getAll().concat().sort((a: Car, b: Car) => {
                 const aValue = a[this.sortColName];
                 const bValue = b[this.sortColName];
 
@@ -137,7 +133,7 @@ export class CarToolComponent {
                 }
 
             });
-            this.lastCars = this.cars;
+            this.lastCars = this.cars.getAll();
         }
 
         return this.theSortedCars;

@@ -2,15 +2,15 @@ import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
 
-import { AppComponent } from "./app.component";
-import { ColorToolComponent } from "./components/color-tool.component";
-import { CarToolComponent } from "./components/car-tool.component";
+import { ColorToolModule } from "./color-tool/color-tool.module";
+import { CarToolModule } from "./car-tool/car-tool.module";
 
-import { DemoPipe } from "./pipes/demo.pipe";
+import { AppComponent } from "./app.component";
+
 
 @NgModule({
-    imports: [ BrowserModule, FormsModule ],
-    declarations: [ AppComponent, ColorToolComponent, CarToolComponent, DemoPipe ],
+    imports: [ BrowserModule, FormsModule, ColorToolModule, CarToolModule ],
+    declarations: [ AppComponent ],
     bootstrap: [ AppComponent ],
 })
 export class AppModule { }
