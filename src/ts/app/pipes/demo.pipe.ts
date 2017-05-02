@@ -2,11 +2,11 @@ import { Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({
     name: "demo",
-    pure: true,
+    pure: false,
 })
 export class DemoPipe implements PipeTransform {
 
-    public transform(value: any[]) {
+    public transform(value: any[], f: string, t: number) {
         console.log("demo pipe execute");
 
         value.sort();
