@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { Router } from "@angular/router";
 
 import { Color } from "../models/color";
 import { ColorsService } from "../services/colors.service";
@@ -18,7 +19,6 @@ import { ColorsService } from "../services/colors.service";
             <button>Add Color</button>
         </form>
     `,
-    providers: [ ColorsService ],
 })
 export class ColorFormComponent {
 
@@ -26,12 +26,14 @@ export class ColorFormComponent {
         hex: "#000000",
     } as Color;
 
-    constructor(private colors: ColorsService ) { }
+    constructor(
+        private colors: ColorsService,
+        private router: Router,
+    ) { }
 
     public addColor() {
-        this.colors.append(this.newColor);
-        this.newColor = {
-            hex: "#000000",
-        } as Color;
+        this.colors.append(this.newColor).subscribe(() => {
+            this.router.navigate(["color-tool"]);
+        });
     }
 }

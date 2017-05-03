@@ -7,90 +7,50 @@ import { CarsService } from "../services/cars.service";
 @Component({
     selector: "car-table",
     template: `
-        <table>
+        <table class="car-table">
             <thead>
                 <tr>
-                    <th (click)="sortByCol('make')">
-                        Make
-                        <span *ngIf="sortColName === 'make'">
-                            <img *ngIf="sortOrder === 0"
-                                src="https://maxcdn.icons8.com/Android_L/PNG/24/Arrows/sort_down-24.png"
-                                title="Sort Down" width="24" height="24">
-                            <img *ngIf="sortOrder === 1"
-                                src="https://maxcdn.icons8.com/Android_L/PNG/24/Arrows/sort_up-24.png"
-                                title="Sort Up" width="24" height="24">
-                        </span>
-                    </th>
-                    <th (click)="sortByCol('model')">
-                        Model
-                        <span *ngIf="sortColName === 'model'">
-                            <img *ngIf="sortOrder === 0"
-                                src="https://maxcdn.icons8.com/Android_L/PNG/24/Arrows/sort_down-24.png"
-                                title="Sort Down" width="24" height="24">
-                            <img *ngIf="sortOrder === 1"
-                                src="https://maxcdn.icons8.com/Android_L/PNG/24/Arrows/sort_up-24.png"
-                                title="Sort Up" width="24" height="24">
-                        </span>
-                    </th>
-                    <th (click)="sortByCol('year')">
-                        Year
-                        <span *ngIf="sortColName === 'year'">
-                            <img *ngIf="sortOrder === 0"
-                                src="https://maxcdn.icons8.com/Android_L/PNG/24/Arrows/sort_down-24.png"
-                                title="Sort Down" width="24" height="24">
-                            <img *ngIf="sortOrder === 1"
-                                src="https://maxcdn.icons8.com/Android_L/PNG/24/Arrows/sort_up-24.png"
-                                title="Sort Up" width="24" height="24">
-                        </span>
-                    </th>
-                    <th (click)="sortByCol('color')">
-                        Color
-                        <span *ngIf="sortColName === 'color'">
-                            <img *ngIf="sortOrder === 0"
-                                src="https://maxcdn.icons8.com/Android_L/PNG/24/Arrows/sort_down-24.png"
-                                title="Sort Down" width="24" height="24">
-                            <img *ngIf="sortOrder === 1"
-                                src="https://maxcdn.icons8.com/Android_L/PNG/24/Arrows/sort_up-24.png"
-                                title="Sort Up" width="24" height="24">
-                        </span>
-                    </th>
-                    <th (click)="sortByCol('price')">
-                        Price
-                        <span *ngIf="sortColName === 'price'">
-                            <img *ngIf="sortOrder === 0"
-                                src="https://maxcdn.icons8.com/Android_L/PNG/24/Arrows/sort_down-24.png"
-                                title="Sort Down" width="24" height="24">
-                            <img *ngIf="sortOrder === 1"
-                                src="https://maxcdn.icons8.com/Android_L/PNG/24/Arrows/sort_up-24.png"
-                                title="Sort Up" width="24" height="24">
-                        </span>
-                    </th>
+                    <th *ngFor="let col of cols" (click)="sortByCol(col.field)" [headerCol]="col.name"
+                        [isColSorted]="sortColName === col.field"
+                        [sortOrder]="sortOrder"></th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let car of sortedCars">
-                    <td>{{car.make | titlecase}}</td>
-                    <td>{{car.model | titlecase}}</td>
-                    <td>{{car.year}}</td>
-                    <td>{{car.color | titlecase}}</td>
-                    <td>{{car.price | currency:'USD':true:'1.2-2'}}</td>
-                    <td><img (click)="deleteCar(car.id)"
-                        src="https://maxcdn.icons8.com/Color/PNG/24/User_Interface/delete_sign-24.png"
-                        title="Delete" width="24" height="24"></td>
-                </tr>
+                <ng-template ngFor let-car [ngForOf]="cars">
+                    <tr car-table-view-row *ngIf="editRowId !== car.id"
+                        [car]="car" (onDeleteCar)="deleteCar(car.id)" (onEditCar)="editRowId = car.id"></tr>
+                    <tr car-table-edit-row *ngIf="editRowId === car.id"
+                        [car]="car" (onSaveCar)="saveCar($event)" (onCancelCar)="editRowId = -1"></tr>
+                </ng-template>
             </tbody>
         </table>
     `,
 })
 export class CarTableComponent {
 
+
+    public cols = [
+        { name: "Make", field: "make" },
+        { name: "Model", field: "model" },
+        { name: "Color", field: "color" },
+        { name: "Year", field: "year" },
+        { name: "Price", field: "price" },
+    ];
+
     public sortColName: string = "";
     public sortOrder: SortOrder = SortOrder.Ascending;
+
+    public cars: Car[] = [];
     public lastCars: Car[] = null;
     public theSortedCars: Car[] = [];
 
-    constructor(private cars: CarsService) { }
+    constructor(private carsSvc: CarsService) {
+
+        this.carsSvc.getAll().subscribe((cars: Car[]) => {
+            this.cars = cars;
+        });
+    }
 
     public deleteCar(carId: number) {
         this.deleteCar(carId);
@@ -114,8 +74,8 @@ export class CarTableComponent {
 
     public get sortedCars() {
 
-        if (this.lastCars !== this.cars.getAll()) {
-            this.theSortedCars = this.cars.getAll().concat().sort((a: Car, b: Car) => {
+        if (this.lastCars !== this.cars) {
+            this.theSortedCars = this.cars.concat().sort((a: Car, b: Car) => {
                 const aValue = a[this.sortColName];
                 const bValue = b[this.sortColName];
 
@@ -130,7 +90,7 @@ export class CarTableComponent {
                 }
 
             });
-            this.lastCars = this.cars.getAll();
+            this.lastCars = this.cars;
         }
 
         return this.theSortedCars;

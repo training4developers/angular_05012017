@@ -1,4 +1,52 @@
 {
+  "cars": [
+    {
+      "id": 1,
+      "make": "Ford",
+      "model": "Fusion",
+      "year": 2017,
+      "color": "blue",
+      "price": 25000
+    },
+    {
+      "id": 2,
+      "make": "Chevy",
+      "model": "Volt",
+      "year": 2015,
+      "color": "red",
+      "price": 27000
+    },
+    {
+      "id": 3,
+      "make": "Toyota",
+      "model": "Prius",
+      "year": 2016,
+      "color": "black",
+      "price": 30000
+    }
+  ],
+  "colors": [
+    {
+      "id": 1,
+      "name": "red",
+      "hex": "#FF0000"
+    },
+    {
+      "id": 2,
+      "name": "blue",
+      "hex": "#0000FF"
+    },
+    {
+      "id": 3,
+      "name": "green",
+      "hex": "#00FF00"
+    },
+    {
+      "hex": "#007300",
+      "name": "forest green",
+      "id": 4
+    }
+  ],
   "owners": [
     {
       "id": 1,

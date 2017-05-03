@@ -1,4 +1,7 @@
 import { Injectable } from "@angular/core";
+import { Http, Headers, RequestOptions } from "@angular/http";
+
+import { Observable } from "rxjs";
 
 import { Model } from "../models/model";
 
@@ -6,28 +9,40 @@ import { Model } from "../models/model";
 export abstract class ModelsService<T extends Model> {
 
     protected models: T[] = [];
+    protected headers = new Headers({ "Content-Type": "application/json" });
+    protected requestOptions = new RequestOptions({
+        headers: this.headers,
+    });
 
-    constructor(initialModels: T[]) {
-        this.models = initialModels;
-    }
+    constructor(
+        private http: Http,
+        private baseURL: string,
+    ) { }
 
     public getAll() {
-        return this.models;
+        return this.http.get(this.baseURL).map((res) => res.json());
     }
 
     public getById(modelId: number) {
-        return this.models.find((model: T) => model.id === modelId);
+        return this.http
+            .get(this.getElementURI(modelId))
+            .map((res) => res.json());
     }
 
     public append(newModel: T) {
-        newModel.id = this.models.reduce( (maxId: number, nextModel: T) =>
-            Math.max(maxId, nextModel.id), 0) + 1;
-        this.models = this.models.concat(newModel);
+        return this.http
+            .post(this.baseURL, JSON.stringify(newModel), this.requestOptions)
+            .map((res) => res.json());
     }
 
     public delete(modelId: number) {
-        const modelIndex = this.models.findIndex((model: T) => model.id === modelId);
-        this.models = [ ...this.models.slice(0, modelIndex), ...this.models.slice(modelIndex + 1) ];
+        return this.http
+            .delete(this.getElementURI(modelId))
+            .map((res) => res.json());
+    }
+
+    private getElementURI(modelId: string | number) {
+        return `${this.baseURL}/${encodeURIComponent(String(modelId))}`;
     }
 
 }
