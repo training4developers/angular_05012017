@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ViewEncapsulation } from "@angular/core";
 
 import { CarsService } from "../services/cars.service";
 
@@ -11,5 +11,9 @@ import { CarsService } from "../services/cars.service";
         <router-outlet></router-outlet>
     `,
     providers: [ CarsService ],
+    encapsulation: ViewEncapsulation.Emulated,
+    styles: [
+        "h1 { color: red; }",
+    ],
 })
 export class CarToolComponent { }

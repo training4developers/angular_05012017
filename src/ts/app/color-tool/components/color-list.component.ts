@@ -1,5 +1,5 @@
-import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { Component, OnInit, Input } from "@angular/core";
+import { Router, ActivatedRoute } from "@angular/router";
 
 import { Color } from "../models/color";
 import { ColorsService } from "../services/colors.service";
@@ -8,8 +8,12 @@ import { ColorsService } from "../services/colors.service";
     selector: "color-list",
     template: `
         <ul>
-            <li color-list-item *ngFor="let theColor of sortedColors" [color]="theColor"
-                (onDeleteColor)="deleteColor($event)"></li>
+            <li list-item *ngFor="let theColor of sortedColors">
+                {{theColor.name | titlecase}} - {{theColor.hex}}
+                <img (click)="deleteColor(theColor.id)"
+                    src="https://maxcdn.icons8.com/Color/PNG/24/User_Interface/delete_sign-24.png"
+                    title="Delete" width="24" height="24">
+            </li>
         </ul>
         <button (click)="createNewColor()">Create New Color</button>
     `,
@@ -23,27 +27,23 @@ export class ColorListComponent implements OnInit {
     constructor(
         private colorsSvc: ColorsService,
         private router: Router,
+        private route: ActivatedRoute,
     ) { }
 
-    public refresh() {
-        this.colorsSvc.getAll().subscribe((colors: Color[]) => {
-            this.colors = colors;
-        });
-    }
 
     public ngOnInit() {
-        this.refresh();
+        this.route.data.subscribe( ({ colors }) => {
+          this.colors = colors;
+        } );
     }
 
     public createNewColor() {
-        // this.router.navigate(["color-tool", "color-form"]);
         this.router.navigateByUrl("/color-tool/color-form");
     }
 
     public get sortedColors() {
 
         if (this.lastColors !== this.colors) {
-            console.log("sorting colors");
             this.theSortedColors = this.colors.concat().sort();
             this.lastColors = this.colors;
         }
@@ -51,8 +51,16 @@ export class ColorListComponent implements OnInit {
         return this.theSortedColors;
     }
 
+    public refreshColors() {
+        this.colorsSvc.getAll().subscribe((colors: Color[]) => {
+            this.colors = colors;
+        });
+    }
+
     public deleteColor(colorId: number) {
-        this.colorsSvc.delete(colorId);
+        this.colorsSvc.delete(colorId).subscribe(() => {
+            this.refreshColors();
+        });
     }
 
 }

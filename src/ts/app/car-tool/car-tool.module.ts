@@ -9,6 +9,7 @@ import { CarTableComponent } from "./components/car-table.component";
 import { CarFormComponent } from "./components/car-form.component";
 
 import { CarTableViewRowComponent } from "./components/car-table-view-row/car-table-view-row.component";
+import { CarTableEditRowComponent } from "./components/car-table-edit-row/car-table-edit-row.component";
 import { CarTableHeaderColComponent } from "./components/car-table-header-col/car-table-header-col.component";
 
 import { DemoPipe } from "./pipes/demo.pipe";
@@ -18,6 +19,7 @@ import { DemoPipe } from "./pipes/demo.pipe";
     declarations: [
         CarToolComponent, CarTableComponent, CarFormComponent,
         CarTableViewRowComponent, CarTableHeaderColComponent,
+        CarTableEditRowComponent,
         DemoPipe,
     ],
     exports: [ CarToolComponent ],

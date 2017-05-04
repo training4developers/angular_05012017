@@ -35,6 +35,12 @@ export abstract class ModelsService<T extends Model> {
             .map((res) => res.json());
     }
 
+    public replace(newModel: T) {
+        return this.http
+            .put(this.getElementURI(newModel.id), JSON.stringify(newModel), this.requestOptions)
+            .map((res) => res.json());
+    }
+
     public delete(modelId: number) {
         return this.http
             .delete(this.getElementURI(modelId))

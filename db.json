@@ -6,7 +6,7 @@
       "model": "Fusion",
       "year": 2017,
       "color": "blue",
-      "price": 25000
+      "price": 1000
     },
     {
       "id": 2,
@@ -27,24 +27,19 @@
   ],
   "colors": [
     {
-      "id": 1,
-      "name": "red",
-      "hex": "#FF0000"
-    },
-    {
-      "id": 2,
-      "name": "blue",
-      "hex": "#0000FF"
-    },
-    {
-      "id": 3,
-      "name": "green",
-      "hex": "#00FF00"
-    },
-    {
       "hex": "#007300",
       "name": "forest green",
       "id": 4
+    },
+    {
+      "hex": "#00bb00",
+      "name": "sasa",
+      "id": 5
+    },
+    {
+      "hex": "#ff0000",
+      "name": "red",
+      "id": 6
     }
   ],
   "owners": [

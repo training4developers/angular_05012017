@@ -6,10 +6,13 @@ import { HttpModule } from "@angular/http";
 import { SharedModule } from "../shared/shared.module";
 import { colorToolRouterModule } from "./color-tool.router";
 
-import { ColorToolComponent } from "./components/color-tool.component";
+import { ColorsService } from "./services/colors.service";
+import { ColorsResolverService } from "./services/colors-resolver.service";
+
+import { ColorToolComponent, ColorToolFooterComponent } from "./components/color-tool.component";
 import { ColorListComponent } from "./components/color-list.component";
 import { ColorFormComponent } from "./components/color-form.component";
-import { ColorListItemComponent } from "./components/color-list-item/color-list-item.component";
+import { ListItemComponent } from "./components/list-item/list-item.component";
 
 @NgModule({
     imports: [
@@ -18,8 +21,10 @@ import { ColorListItemComponent } from "./components/color-list-item/color-list-
     ],
     declarations: [
         ColorToolComponent, ColorListComponent,
-        ColorFormComponent, ColorListItemComponent,
+        ColorFormComponent, ListItemComponent,
+        ColorToolFooterComponent,
     ],
     exports: [ ColorToolComponent ],
+    providers: [ ColorsService, ColorsResolverService ],
 })
 export class ColorToolModule { }
