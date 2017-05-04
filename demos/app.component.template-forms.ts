@@ -1,7 +1,6 @@
 import { Component, ViewChild, ViewChildren, AfterViewInit, Directive, forwardRef } from "@angular/core";
 import { NgForm, FormControl, NG_VALIDATORS,
-    NG_ASYNC_VALIDATORS, FormGroup, AbstractControl,
-    AsyncValidator, Validators, ValidationErrors, FormBuilder } from "@angular/forms";
+    NG_ASYNC_VALIDATORS, FormGroup, AbstractControl, AsyncValidator } from "@angular/forms";
 import { Http } from "@angular/http";
 
 const phoneValidator = (c: FormControl) => {
@@ -23,16 +22,14 @@ const phoneValidator = (c: FormControl) => {
 };
 
 @Directive({
-    selector: "input[type=tel][ngModel]",
+    selector: "input[type=tel]",
     providers: [
         { provide: NG_VALIDATORS, useValue: phoneValidator, multi: true },
     ],
 })
 export class PhoneValidatorDirective { }
 
-const preferredContactMethodValidator = (c: AbstractControl) => {
-
-    const g = c as FormGroup;
+const preferredContactMethodValidator = (g: FormGroup) => {
 
     if (!g.controls.preferredContactMethodSelect) {
         return null;
@@ -43,13 +40,13 @@ const preferredContactMethodValidator = (c: AbstractControl) => {
             if (g.controls.emailInput.value == null || String(g.controls.emailInput.value).length === 0) {
                 return {
                     preferredContactMethod: "EMAIL",
-                } as ValidationErrors;
+                };
             }
         case "PHONE":
             if (g.controls.phoneInput.value == null || String(g.controls.phoneInput.value).length === 0) {
                 return {
                     preferredContactMethod: "PHONE",
-                } as ValidationErrors;
+                };
             }
             break;
     }
@@ -125,7 +122,7 @@ export class ProductSerialNumberValidatorDirective implements AsyncValidator {
 @Component({
     selector: "main",
     template: `
-        <form novalidate ngNoForm [formGroup]="personForm">
+        <form novalidate>
             <details *ngIf="personForm.invalid">
                 <summary>There are errors in the person form.</summary>
                 <ul>
@@ -141,43 +138,47 @@ export class ProductSerialNumberValidatorDirective implements AsyncValidator {
             </details>
             <div>
                 <label for="product-serial-number-input">Product Serial Number</label>
-                <input type="text" id="product-serial-number-input" formControlName="serialNumberInput">
+                <input type="text" id="product-serial-number-input"
+                    [(ngModel)]="person.serialNumber" name="serialNumberInput"
+                    validate-serial-number required minlength="12">
                 <span class="valid-message">Validated</span>
                 <span>Error</span>
             </div>
-            <fieldset formGroupName="personName">
+            <fieldset ngModelGroup="personName">
                 <div>
                     <label for="first-name-input">First Name:</label>
-                    <input type="text" id="first-name-input" formControlName="firstNameInput">
+                    <input type="text" id="first-name-input" name="firstNameInput"
+                        [(ngModel)]="person.firstName" required>
                     <span>First Name is required.</span>
                 </div>
                 <div>
                     <label for="last-name-input">Last Name:</label>
-                    <input type="text" id="last-name-input" formControlName="lastNameInput">
+                    <input type="text" id="last-name-input" name="lastNameInput"
+                        [(ngModel)]="person.lastName" required>
                     <span>Last Name is required.</span>
                 </div>
             </fieldset>
-            <fieldset formGroupName="contactDetails">
+            <fieldset ngModelGroup="contactDetails" preferred-contact-required>
                 <div>
                     <label for="email-input">Email:</label>
-                    <input type="email" id="email-input" formControlName="emailInput">
-                    <span *ngIf="personForm.controls.contactDetails.controls.emailInput.invalid">
-                        <span *ngIf="personForm.controls.contactDetails.controls.emailInput.errors.email">
-                            Email is invalid.
-                        </span>
+                    <input #emailInput="ngModel" type="email" id="email-input" name="emailInput"
+                        [(ngModel)]="person.email" email>
+                    <span *ngIf="emailInput.invalid">
+                        <span *ngIf="emailInput.errors.email">Email is invalid.</span>
                     </span>
                 </div>
                 <div>
                     <label for="phone-input">Phone:</label>
-                    <input type="tel" id="phone-input" formControlName="phoneInput">
+                    <input type="tel" id="phone-input" name="phoneInput" [(ngModel)]="person.phone">
                     <span>Phone is invalid.</span>
                 </div>
                 <div class="center-me">
                     <label for="preferred-contact-method-select">
                         Preferred Contact Method:
                     </label>
-                    <select id="preferred-contact-method-select" size="4"
-                        formControlName="preferredContactMethodSelect">
+                    <select id="preferred-contact-method-select"
+                        [(ngModel)]="preferredContactMethod" size="4"
+                        name="preferredContactMethodSelect" required>
                         <option *ngFor="let contactMethod of contactMethods" [value]="contactMethod.code">
                             {{contactMethod.caption}}
                         </option>
@@ -187,7 +188,8 @@ export class ProductSerialNumberValidatorDirective implements AsyncValidator {
             </fieldset>
             <div>
                 <label for="comments-textarea">Comments</label>
-                <textarea id="comments-textarea" formControlName="commentsTextarea"></textarea>
+                <textarea id="comments-textarea" [(ngModel)]="person.comments"
+                    name="commentsTextarea"></textarea>
             </div>
             <button (click)="savePerson()">Save Person</button>
         </form>
@@ -209,39 +211,8 @@ export class ProductSerialNumberValidatorDirective implements AsyncValidator {
 })
 export class AppComponent implements AfterViewInit {
 
-    // public personForm = new FormGroup({
-    //     serialNumberInput: new FormControl(
-    //         "",
-    //         [ Validators.required, Validators.minLength(12) ],
-    //         [ productSerialNumberValidatorFactory(this.http) ]),
-    //     personName: new FormGroup({
-    //         firstNameInput: new FormControl("", [ Validators.required ]),
-    //         lastNameInput: new FormControl("", [ Validators.required ]),
-    //     }),
-    //     contactDetails: new FormGroup({
-    //         emailInput: new FormControl("", [ Validators.email ]),
-    //         phoneInput: new FormControl("", [ phoneValidator ]),
-    //         preferredContactMethodSelect: new FormControl("", [ Validators.required ]),
-    //     }, preferredContactMethodValidator),
-    //     commentsTextarea: new FormControl(""),
-    // });
-
-    public personForm = this.fb.group({
-        serialNumberInput: [
-            "", [ Validators.required, Validators.minLength(12) ],
-            [ productSerialNumberValidatorFactory(this.http) ],
-        ],
-        personName: this.fb.group({
-            firstNameInput: [ "", [ Validators.required ] ],
-            lastNameInput: [ "", [ Validators.required ] ],
-        }),
-        contactDetails: this.fb.group({
-            emailInput: [ "", [ Validators.email ] ],
-            phoneInput: [ "", [ phoneValidator ] ],
-            preferredContactMethodSelect: [ "", [ Validators.required ] ],
-        }, { validator: preferredContactMethodValidator }),
-        commentsTextarea: [ "" ],
-    });
+    @ViewChild(NgForm)
+    public personForm: NgForm;
 
     public person = {
         firstName: "",
@@ -253,13 +224,11 @@ export class AppComponent implements AfterViewInit {
         { code: "PHONE", caption: "Phone" },
     ];
 
-    constructor(private http: Http, private fb: FormBuilder) { }
-
     public ngAfterViewInit() {
         console.log(this.personForm);
     }
 
     public savePerson() {
-        console.log(this.personForm.value);
+        console.log(this.personForm);
     }
 }

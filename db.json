@@ -1,4 +1,9 @@
 {
+  "products": [
+    { "id": "123ASD4645AS", "name": "Note 7" },
+    { "id": "456ASD4678AS", "name": "Galaxy 8" },
+    { "id": "234D4634443S", "name": "Robo Vac" }
+  ],
   "cars": [
     {
       "id": 1,
