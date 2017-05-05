@@ -16,7 +16,7 @@ import { PRODUCTS } from "./shared/services/products.service";
 //     PreferredContactMethodValidatorDirective, ProductSerialNumberValidatorDirective } from "./app.component";
 import {
     AppComponent, ChildDemoComponent, DemoDirDirective,
-    Demo2DirDirective, MyUnlessDirective, MyForDirective,
+    Demo2DirDirective
 } from "./app.component";
 import { HomeComponent } from "./components/home.component";
 
@@ -37,8 +37,7 @@ import "../../scss/styles.scss";
     ],
     declarations: [
         AppComponent, HomeComponent, ChildDemoComponent,
-        DemoDirDirective, MyUnlessDirective,
-        Demo2DirDirective, MyForDirective,
+        DemoDirDirective, Demo2DirDirective,
     ],
         // PhoneValidatorDirective, PreferredContactMethodValidatorDirective,
         // ProductSerialNumberValidatorDirective ],
