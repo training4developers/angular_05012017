@@ -9,8 +9,7 @@
         "reports/": true,
         ".vscode/": true
     },
-     "editor.tabSize": 4,
-     "editor.insertSpaces": true,
-     "editor.wordWrapColumn": 120,
-     "editor.quickSuggestions": false
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.wordWrapColumn": 120
 }

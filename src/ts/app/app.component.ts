@@ -65,6 +65,7 @@ export class ChildDemoComponent {
 
     constructor(@Inject(PRODUCTS) private products: any) {
         console.log(this.products);
+
     }
 
 }
