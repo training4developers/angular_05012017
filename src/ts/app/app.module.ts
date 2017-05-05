@@ -17,6 +17,7 @@ import { PRODUCTS } from "./shared/services/products.service";
 import {
     AppComponent, ChildDemoComponent,
     DemoDirDirective, Demo2DirDirective,
+    MyIfDirective, MyForDirective,
 } from "./app.component";
 import { HomeComponent } from "./components/home.component";
 
@@ -38,6 +39,7 @@ import "../../scss/styles.scss";
     declarations: [
         AppComponent, HomeComponent, ChildDemoComponent,
         DemoDirDirective, Demo2DirDirective,
+        MyIfDirective, MyForDirective,
     ],
         // PhoneValidatorDirective, PreferredContactMethodValidatorDirective,
         // ProductSerialNumberValidatorDirective ],
