@@ -9,8 +9,15 @@ import { SharedModule } from "./shared/shared.module";
 import { ColorToolModule } from "./color-tool/color-tool.module";
 import { CarToolModule } from "./car-tool/car-tool.module";
 
-import { AppComponent, PhoneValidatorDirective,
-    PreferredContactMethodValidatorDirective, ProductSerialNumberValidatorDirective } from "./app.component";
+import { PRODUCTS } from "./shared/services/products.service";
+
+
+// import { AppComponent, PhoneValidatorDirective,
+//     PreferredContactMethodValidatorDirective, ProductSerialNumberValidatorDirective } from "./app.component";
+import {
+    AppComponent, ChildDemoComponent, DemoDirDirective,
+    Demo2DirDirective, MyUnlessDirective, MyForDirective,
+} from "./app.component";
 import { HomeComponent } from "./components/home.component";
 
 import "../../scss/styles.scss";
@@ -20,15 +27,21 @@ import "../../scss/styles.scss";
     imports: [
         BrowserModule,
         FormsModule, ReactiveFormsModule, HttpModule,
-        // SharedModule,
-        // ColorToolModule,
-        // CarToolModule,
+        SharedModule,
+        ColorToolModule,
+        CarToolModule,
         // appRouterModule,
     ],
+    providers: [
+        { provide: PRODUCTS, useValue: { id: "app-module" }, multi: true },
+    ],
     declarations: [
-        AppComponent, HomeComponent,
-        PhoneValidatorDirective, PreferredContactMethodValidatorDirective,
-        ProductSerialNumberValidatorDirective ],
+        AppComponent, HomeComponent, ChildDemoComponent,
+        DemoDirDirective, MyUnlessDirective,
+        Demo2DirDirective, MyForDirective,
+    ],
+        // PhoneValidatorDirective, PreferredContactMethodValidatorDirective,
+        // ProductSerialNumberValidatorDirective ],
     bootstrap: [ AppComponent ],
 })
 export class AppModule { }

@@ -3,6 +3,8 @@ import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 
+import { PRODUCTS } from "../shared/services/products.service";
+
 import { carToolRouterModule } from "./car-tool.router";
 import { CarToolComponent } from "./components/car-tool.component";
 import { CarTableComponent } from "./components/car-table.component";
@@ -23,5 +25,8 @@ import { DemoPipe } from "./pipes/demo.pipe";
         DemoPipe,
     ],
     exports: [ CarToolComponent ],
+    providers: [
+        { provide: PRODUCTS, useValue: { id: "car-tool"}, multi: true },
+    ],
 })
 export class CarToolModule { }

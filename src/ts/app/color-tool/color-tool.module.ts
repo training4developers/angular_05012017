@@ -5,6 +5,7 @@ import { HttpModule } from "@angular/http";
 
 import { SharedModule } from "../shared/shared.module";
 import { colorToolRouterModule } from "./color-tool.router";
+import { PRODUCTS } from "../shared/services/products.service";
 
 import { ColorsService } from "./services/colors.service";
 import { ColorsResolverService } from "./services/colors-resolver.service";
@@ -25,6 +26,9 @@ import { ListItemComponent } from "./components/list-item/list-item.component";
         ColorToolFooterComponent,
     ],
     exports: [ ColorToolComponent ],
-    providers: [ ColorsService, ColorsResolverService ],
+    providers: [
+        ColorsService, ColorsResolverService,
+        { provide: PRODUCTS, useValue: { id: "color-tool"}, multi: true },
+    ],
 })
 export class ColorToolModule { }
