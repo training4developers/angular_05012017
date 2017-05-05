@@ -1,7 +1,4 @@
-import { Component, Injectable,
-    InjectionToken, Inject, Directive, ElementRef,
-    HostListener, TemplateRef, ViewContainerRef,
-    Input,
+import { Component, Injectable, InjectionToken, Inject, Directive,
 } from "@angular/core";
 
 import { NG_VALIDATORS } from "@angular/forms";
@@ -20,18 +17,9 @@ export class DemoDirDirective {
     constructor(
         @Inject(PRODUCTS) private products: any,
         @Inject(NG_VALIDATORS) private validators: any,
-        private e: ElementRef,
     ) {
-
         console.log(this.products);
         console.log(this.validators);
-
-        this.e.nativeElement.style.backgroundColor = "blue";
-    }
-
-    @HostListener("click")
-    public clickMe() {
-        console.log("clicked!");
     }
 }
 
@@ -59,10 +47,6 @@ export class Demo2DirDirective {
 })
 export class ChildDemoComponent {
 
-    public items = [
-        "red", "yellow", "blue",
-    ];
-
     constructor(@Inject(PRODUCTS) private products: any) {
         console.log(this.products);
     }
@@ -75,9 +59,6 @@ export class ChildDemoComponent {
         parent demo
         <child-demo></child-demo>
     `,
-    viewProviders: [
-        { provide: PRODUCTS, useValue: { id: "app-comp" }, multi: true },
-    ],
 })
 export class AppComponent {
 

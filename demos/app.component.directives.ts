@@ -90,12 +90,20 @@ export class MyForDirective {
     public set myForOf(items: any[]) {
 
         this.viewContainerRef.clear();
-        items.forEach((item) => {
+        items.forEach((item, index, theItems) => {
             console.log(item);
             this.viewContainerRef.createEmbeddedView(
                 this.templateRef,
-                { $implicit: item },
-                0,
+                {
+                    $implicit: item,
+                    index,
+                    even: index % 2 === 0,
+                    odd: index % 2 !== 0,
+                    first: index === 0,
+                    last: index === theItems.length - 1,
+                    middle: !(index === 0) && !(index === theItems.length - 1),
+                },
+                // 0,
             );
         });
 
@@ -111,10 +119,29 @@ export class MyForDirective {
             You can see me!
         </div>
         <ul>
-            <ng-template myFor [myForOf]="items" let-item>
-                <li>{{item}}</li>
+            <ng-template myFor [myForOf]="items"
+                let-item
+                let-index="index"
+                let-even="even"
+                let-odd="odd"
+                let-first="first"
+                let-last="last"
+                let-middle="middle"
+            >
+                <li>
+                    <div>Index: {{index}}</div>
+                    <div>Even: {{even}}</div>
+                    <div>Odd: {{odd}}</div>
+                    <div>First: {{first}}</div>
+                    <div>Last: {{last}}</div>
+                    <div>Middle: {{middle}}</div>
+                    <div>{{item}}</div>
+                </li>
             </ng-template>
-            <li *myFor="let item of items">{{item}}</li>
+            <li *myFor="let item of items; let aliasEven=even">
+                <div>Even: {{aliasEven}}</div>
+                <div>{{item}}</div>
+            </li>
         </ul>
     `,
 })

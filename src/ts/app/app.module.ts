@@ -15,8 +15,8 @@ import { PRODUCTS } from "./shared/services/products.service";
 // import { AppComponent, PhoneValidatorDirective,
 //     PreferredContactMethodValidatorDirective, ProductSerialNumberValidatorDirective } from "./app.component";
 import {
-    AppComponent, ChildDemoComponent, DemoDirDirective,
-    Demo2DirDirective
+    AppComponent, ChildDemoComponent,
+    DemoDirDirective, Demo2DirDirective,
 } from "./app.component";
 import { HomeComponent } from "./components/home.component";
 
