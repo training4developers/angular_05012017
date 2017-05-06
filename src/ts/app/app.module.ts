@@ -10,14 +10,16 @@ import { ColorToolModule } from "./color-tool/color-tool.module";
 import { CarToolModule } from "./car-tool/car-tool.module";
 
 import { PRODUCTS } from "./shared/services/products.service";
+import { AppStore } from "./services/app-store.service";
 
 
 // import { AppComponent, PhoneValidatorDirective,
 //     PreferredContactMethodValidatorDirective, ProductSerialNumberValidatorDirective } from "./app.component";
 import {
-    AppComponent, ChildDemoComponent,
-    DemoDirDirective, Demo2DirDirective,
-    MyIfDirective, MyForDirective,
+    AppComponent,
+    // ChildDemoComponent,
+    // DemoDirDirective, Demo2DirDirective,
+    // MyIfDirective, MyForDirective,
 } from "./app.component";
 import { HomeComponent } from "./components/home.component";
 
@@ -35,11 +37,13 @@ import "../../scss/styles.scss";
     ],
     providers: [
         { provide: PRODUCTS, useValue: { id: "app-module" }, multi: true },
+        AppStore,
     ],
     declarations: [
-        AppComponent, HomeComponent, ChildDemoComponent,
-        DemoDirDirective, Demo2DirDirective,
-        MyIfDirective, MyForDirective,
+        AppComponent, HomeComponent,
+        // ChildDemoComponent,
+        // DemoDirDirective, Demo2DirDirective,
+        // MyIfDirective, MyForDirective,
     ],
         // PhoneValidatorDirective, PreferredContactMethodValidatorDirective,
         // ProductSerialNumberValidatorDirective ],
